@@ -61,9 +61,10 @@ else:
 
 opts = webdriver.chrome.options.Options()
 opts.headless = True
+opts.add_argument('log-level=3') # so mostra erros graves no terminal
 
 url = "https://meuvivofixo.vivo.com.br/servlet/Satellite?c=Page&cid=1382552299186&pagename=MeuVivoFixo%2FPage%2FTemplateGlobalAreaAberta"
-driver = webdriver.Chrome(chromedriver_location)
+driver = webdriver.Chrome(options=opts, executable_path=chromedriver_location)
 driver.get(url)
 
 numero_inicial = 1
@@ -86,11 +87,9 @@ for street in street_list:
 
     driver.find_element_by_xpath(xpath_botao_pesquisar).click()
 
-    time.sleep(4)
-
     xpath_quantidade_resultados = '//*[@id="formWCSVivo"]/div/p'
 
-    tentativas_maxima = 60
+    tentativas_maxima = 90
     for i in range(tentativas_maxima):
         try:
             texto_quantidade = driver.find_element_by_xpath(xpath_quantidade_resultados).text
@@ -104,8 +103,7 @@ for street in street_list:
             else:
                 time.sleep(1)
                 driver.find_element_by_xpath(xpath_botao_pesquisar).click()
-                time.sleep(4)
-                texto_quantidade = driver.find_element_by_xpath(xpath_quantidade_resultados).text
+                time.sleep(1)
                 break
         else:
             break
@@ -116,7 +114,6 @@ for street in street_list:
         texto_quantidade == "Não foi possível realizar a sua consulta. Por favor, tente novamente."):
         xpath_botao_nova_busca = '//*[@id="btnPesquisar"]/img'
         driver.find_element_by_xpath(xpath_botao_nova_busca).click()
-        time.sleep(5)
         continue
 
     if(texto_quantidade == "Foi encontrado apenas 1 Cliente."):
@@ -136,13 +133,21 @@ for street in street_list:
         for j in range(1, 16):
             xpath_tel = '//*[@id="formWCSVivo"]/table/tbody/tr[{j}]/td/table/tbody/tr[2]/td[1]'.format(j=j)
             xpath_nome = '//*[@id="formWCSVivo"]/table/tbody/tr[{j}]/td/table/tbody/tr[1]/td[1]/strong'.format(j=j)
-            tel = driver.find_element_by_xpath(xpath_tel).text
-            nome = driver.find_element_by_xpath(xpath_nome).text
+            tentativas = 5
+            for i in range(tentativas):
+                try:
+                    tel = driver.find_element_by_xpath(xpath_tel).text
+                    nome = driver.find_element_by_xpath(xpath_nome).text
+                except:
+                    time.sleep(3)
+                    continue
+                else:
+                    break
             file_telefones.write(tel + '\n')
             file_nomes.write(nome + '\n')
         xpath_botao_prox = '//*[@id="formWCSVivo"]/table/tbody/tr[16]/td/a[{i}]'.format(i=i+1)
         driver.find_element_by_xpath(xpath_botao_prox).click()
-        time.sleep(4)
+        time.sleep(1)
 
     restantes = quantidade_resultados % 15
 
@@ -156,8 +161,6 @@ for street in street_list:
         nome = driver.find_element_by_xpath(xpath_nome).text
         file_telefones.write(tel + '\n')
         file_nomes.write(nome + '\n')
-
-    time.sleep(2)
 
     if(repete):
         xpath_endereco_ultimo_resultado = '//*[@id="formWCSVivo"]/table/tbody/tr[15]/td/table/tbody/tr[1]/td[2]'
