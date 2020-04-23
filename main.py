@@ -28,7 +28,7 @@ def main():
 
     numero_inicial = 1
 
-    file_telefones = open('./txt/telefones-{cidade}.txt'.format(cidade=cidade), 'w')
+    file_telefones = open('./txt/telefones_{cidade}.txt'.format(cidade=cidade), 'w')
 
     for street in street_list:
         print(street)
