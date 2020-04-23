@@ -1,7 +1,6 @@
 import requests
 import urllib.parse
 import math
-import sys
 import time
 from selenium import webdriver
 from get_ruas import pega_ruas
