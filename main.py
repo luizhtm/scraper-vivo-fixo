@@ -28,7 +28,6 @@ def main():
     numero_inicial = 1
 
     nome_cidade_arquivo = cidade.replace(' ', '-').lower()
-
     file_telefones = open('./txt/telefones_{cidade}.txt'.format(cidade=nome_cidade_arquivo), 'w')
 
     for street in street_list:
@@ -50,7 +49,13 @@ def main():
         xpath_quantidade_resultados = '//*[@id="formWCSVivo"]/div/p'
 
         tentativas_maxima = 5
+        redirecionado = False
         for i in range(tentativas_maxima):
+            if driver.current_url == 'https://meuvivofixo.vivo.com.br/servlet/null':
+                driver.get(url)
+                redirecionado = True
+                break
+
             driver.find_element_by_xpath(xpath_botao_pesquisar).click()
 
             espera = 10
@@ -72,6 +77,10 @@ def main():
 
             if sucesso:
                 break
+
+        if redirecionado:
+            street_list.insert(0, street)
+            continue
         
         texto_quantidade = texto_quantidade.strip()
 
