@@ -37,5 +37,3 @@ def limpa_telefones_e_importa_para_csv(cidade):
             pass
     
     print(len(sem_dup_filtrado))
-
-limpa_telefones_e_importa_para_csv('Salto')
