@@ -22,7 +22,7 @@ def main():
 
     url = "https://meuvivofixo.vivo.com.br/servlet/Satellite?c=Page&cid=1382552299186&pagename=MeuVivoFixo%2FPage%2FTemplateGlobalAreaAberta"
     driver = webdriver.Firefox(options=opts, executable_path=geckodriver_location)
-    driver.implicitly_wait(20)
+    driver.implicitly_wait(15)
     driver.get(url)
 
     numero_inicial = 1
@@ -118,9 +118,7 @@ def main():
 
         for i in range(1, restantes + 1):
             xpath_tel = '//*[@id="formWCSVivo"]/table/tbody/tr[{i}]/td/table/tbody/tr[2]/td[1]'.format(i=i)
-
             tel = driver.find_element_by_xpath(xpath_tel).text
-
             file_telefones.write(tel + '\n')
 
         if(repete):
