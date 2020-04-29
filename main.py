@@ -9,20 +9,20 @@ from importa_csv import limpa_telefones_e_importa_para_csv
 def main():
     # O driver varia de acordo com o OS...
     # Versões desatualizadas também não vão funcionar então baixe na hora de usar.
-    chromedriver_location = "C:\\chromedriver"
+    geckodriver_location = "C:\\geckodriver"
 
     cidade = input("Digite uma cidade (SP): ").strip()
 
     street_list = pega_ruas(cidade)
     street_list = [string for string in street_list if string != ""]
 
-    opts = webdriver.chrome.options.Options()
+    opts = webdriver.firefox.options.Options()
     #opts.headless = True
     opts.add_argument('log-level=3') # so mostra erros graves no terminal
 
     url = "https://meuvivofixo.vivo.com.br/servlet/Satellite?c=Page&cid=1382552299186&pagename=MeuVivoFixo%2FPage%2FTemplateGlobalAreaAberta"
-    driver = webdriver.Chrome(options=opts, executable_path=chromedriver_location)
-    driver.implicitly_wait(10)
+    driver = webdriver.Firefox(options=opts, executable_path=geckodriver_location)
+    driver.implicitly_wait(20)
     driver.get(url)
 
     numero_inicial = 1
@@ -110,6 +110,7 @@ def main():
                 file_telefones.write(tel + '\n')
             xpath_botao_prox = '//*[@id="formWCSVivo"]/table/tbody/tr[16]/td/a[{i}]'.format(i=i+1)
             driver.find_element_by_xpath(xpath_botao_prox).click()
+            time.sleep(1)
         
         restantes = quantidade_resultados % 15
         if restantes == 0:
