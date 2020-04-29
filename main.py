@@ -22,7 +22,7 @@ def main():
 
     url = "https://meuvivofixo.vivo.com.br/servlet/Satellite?c=Page&cid=1382552299186&pagename=MeuVivoFixo%2FPage%2FTemplateGlobalAreaAberta"
     driver = webdriver.Firefox(options=opts, executable_path=geckodriver_location)
-    driver.implicitly_wait(15)
+    driver.implicitly_wait(10)
     driver.get(url)
 
     numero_inicial = 1
