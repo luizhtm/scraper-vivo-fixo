@@ -3,7 +3,8 @@ Coleta telefones de usuários de vivo fixo de uma dada cidade
 
 ## Parou de funcionar
 
-O site que eu servlet da Vivo que eu estava usando para coletar parou de funcionar, portanto, o programa não funciona mais
+O servlet da Vivo que eu estava usando para coletar os numeros parou de funcionar, portanto, o programa não funciona mais.
+
 ## Instalando
 
 Considerando Python 3 e pip devidamente configurado:
