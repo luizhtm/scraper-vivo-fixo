@@ -9,7 +9,7 @@ from importa_csv import limpa_telefones_e_importa_para_csv
 def main():
     # O driver varia de acordo com o OS...
     # Versões desatualizadas também não vão funcionar então baixe na hora de usar.
-    geckodriver_location = "C:\\geckodriver"
+    geckodriver_location = "./geckodriver"
 
     cidade = input("Digite uma cidade (SP): ").strip()
 
